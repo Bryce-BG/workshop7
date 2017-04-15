@@ -1,46 +1,32 @@
 var MongoClient = require('mongodb').MongoClient;
-
 var url = 'mongodb://localhost:27017/facebook';
-MongoClient.connect(url, function(err, db) {
+MongoClient.connect(url, function (err, db) {
   if (err) {
     throw new Error("Could not connect to database: " + err);
   } else {
-    console.log("Connected correctly to server.");
-    // This is where we will kick off other actions that use the database!
+    console.log("connected correctly to server.")
     mongoExample(db);
   }
-});
-
-
-
+})
 /**
- * Inserts a simple document into the 'helloworld'
- * document collection.
- * @param db The database connection
- * @param callback A callback function to call once the
- *   operation completes. We will pass back the new object's
- *   ID.
- */
+	Description:
+*Insert simple document into helloworld document collection.
+*@param db database collection
+*@callback - callback function.
+**/
 function insertExample(db, callback) {
-  // A document is just a JSON object, like in our mock database.
   var exampleDocument = {
-    message: "Hello, world!"
+    message: "Hello, World!"
   };
-  // Insert the example document into collection 'helloworld'.
   db.collection('helloworld').insertOne(exampleDocument, function(err, result) {
     if (err) {
-      // Something bad happened, and the insertion failed.
       throw err;
     } else {
-      // Success!
-      console.log("Successfully updated database! The new object's ID is " + result.insertedId);
+      console.log("Successfully updated database, new object ID is " + result.insertedId);
       callback(result.insertedId);
     }
   });
 }
-
-
-
 /**
  * Get a document from the helloworld document collection with
  * a particular _id.
@@ -70,19 +56,11 @@ function getHelloWorldDocument(db, id, callback) {
   });
 }
 
-
-/**
- * Add a new document to helloworld collection, read the document,
- * print the document.
- */
 function mongoExample(db) {
-  // Step 1: Insert the document.
   insertExample(db, function(newId) {
-    // Step 2: Read the document.
     getHelloWorldDocument(db, newId, function(doc) {
-      // Step 3: Print the document.
-      console.log("Wrote new object to helloworld collection:");
+      console.log("Wrote new object to helloworld collection");
       console.log(doc);
-    });
-  });
+    })
+  })
 }
